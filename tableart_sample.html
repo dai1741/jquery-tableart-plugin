@@ -21,10 +21,11 @@ $(document).ready(function() {
 		ignoreDrag(e);
 		$(this).removeClass('drag-on');
 		createTableArt(e.originalEvent.dataTransfer.files[0], $(this));
-	}).bind('click', function(e) {
-		//alert('aa');
-		//$(this).addClass('drag-on');
 	});
+	
+	$('#image-input').change(function(e) {
+		createTableArt(e.originalEvent.target.files[0], $('#image-dd'));
+	})
 	
 });
 //http://jxs.me/2010/09/20/drag-and-drop-with-jquery/
@@ -72,7 +73,6 @@ function createTableArt(file, self) {
 <style>
 #image-dd {
     background-color: #eee;
-    margin: 1em 0;
     padding: 2em 1em;
 }
 
@@ -88,11 +88,15 @@ function createTableArt(file, self) {
 <article class="content">
 	<h2>CrossAudio</h2>
 	<p>
-		<label><input type="checkbox" name="has-src" id="has-src" />htmlソースを付ける（重い）</label>
+		<label><input type="checkbox" name="has-src" id="has-src" />htmlソースを表示する（重い）</label>
 	</p>
-	<div id="image-dd">
+	<p id="image-dd">
 		ここに画像ファイルをドラッグ＆ドロップ!!!!!!!!
-	</div>
+	</p>
+	<p id="image-input">
+		あるいはここで画像ファイルを選択!!!!!!!!<br />
+		<input id="read-button" type="file" size="50" />
+	</p>
 	<div id="tableart-disp">
 		ここにテーブルアートが表示されます!!!!!!!!
 	</div>
