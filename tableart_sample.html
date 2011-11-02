@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>テーブルアート生成機 - dai1741</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js">
+</script>
+<script src="jquery-tableart.js">
+</script>
+<script>
+var img;
+$(document).ready(function() {
+	$('#image-dd').bind('dragenter', function(e) {
+		ignoreDrag(e);
+		$(this).addClass('drag-on');
+		console.log('dragin');
+	}).bind('dragover', ignoreDrag).bind('dragleave', function(e) {
+		$(this).removeClass('drag-on');
+		console.log('dragout');
+	}).bind('drop', function(e) {
+		ignoreDrag(e);
+		$(this).removeClass('drag-on');
+		createTableArt(e.originalEvent.dataTransfer.files[0], $(this));
+	}).bind('click', function(e) {
+		//alert('aa');
+		//$(this).addClass('drag-on');
+	});
+	
+});
+//http://jxs.me/2010/09/20/drag-and-drop-with-jquery/
+function ignoreDrag(e) {
+	e.originalEvent.stopPropagation();
+	e.originalEvent.preventDefault();
+}
+
+function createTableArt(file, self) {
+	if (file == undefined) return;
+	
+	var dispAWhile = function(mes, mills) {
+		var orig = self.text();
+		self.text(mes);
+		setTimeout(function() {
+			self.text(orig);
+		}, mills);
+	};
+	
+	var img = new Image();
+	img.onload = function() {
+		$('#tableart-disp').tableArt(img);
+	};
+	img.onerror = function() {
+		dispAWhile("それ画像じゃないよ多分！！！", 3000);
+	};
+	img.onabort = function() {
+		dispAWhile("読み込みが中断されました。ローカルファイルの癖に！！", 3000);
+	};
+	var reader = new FileReader();
+	reader.readAsDataURL(file);
+	reader.onload = function(e) {
+		img.src = e.target.result;
+	};
+	
+}
+
+</script>
+<style>
+#image-dd {
+    background-color: #eee;
+    padding: 1em;
+}
+
+#image-dd.drag-on {
+    background-color: #fdd;
+}
+</style>
+</head>
+<body>
+<header>
+<h1>dai1741のページ</h1>
+</header>
+<article class="content">
+	<h2>CrossAudio</h2>
+	<p>
+		hi
+	</p>
+	<div id="image-dd">
+		Drag & Drop a Image Here!!!!!!!!
+	</div>
+	<div id="tableart-disp">
+		Table Art Will Be Displayed Here!!!!!!!!
+	</div>
+</article>
+<footer>
+</footer>
+</body>
+</html>
