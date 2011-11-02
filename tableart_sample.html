@@ -34,7 +34,8 @@ function ignoreDrag(e) {
 }
 
 function createTableArt(file, self) {
-	if (file == undefined) return;
+	if (file == undefined) 
+		return;
 	
 	var dispAWhile = function(mes, mills) {
 		var orig = self.text();
@@ -46,8 +47,11 @@ function createTableArt(file, self) {
 	
 	var img = new Image();
 	img.onload = function() {
-		$('#tableart-disp').tableArt(img, function(self, size) {
-			return confirm('Image is way too big! Are you ok to create a huge table art?');
+		$('#tableart-disp').tableArt(img, {
+			imageTooBigHandler: function(self, size) {
+				return confirm('画像が大きすぎます。ブラウザがフリーズするかもしれませんが、処理を続行しますか？');
+			},
+			hasSrc: $('input#has-src').is(':checked')
 		});
 	};
 	img.onerror = function() {
@@ -68,7 +72,7 @@ function createTableArt(file, self) {
 <style>
 #image-dd {
     background-color: #eee;
-	margin: 1em 0;
+    margin: 1em 0;
     padding: 2em 1em;
 }
 
@@ -79,12 +83,12 @@ function createTableArt(file, self) {
 </head>
 <body>
 <header>
-<h1>dai1741のページ</h1>
+	<h1>dai1741のページ</h1>
 </header>
 <article class="content">
 	<h2>CrossAudio</h2>
 	<p>
-		hi
+		<label><input type="checkbox" name="has-src" id="has-src" />htmlソースを付ける（重い）</label>
 	</p>
 	<div id="image-dd">
 		ここに画像ファイルをドラッグ＆ドロップ!!!!!!!!
