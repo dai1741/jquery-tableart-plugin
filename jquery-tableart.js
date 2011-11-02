@@ -11,21 +11,22 @@
  */
 
 (function($) {
-	jQuery.fn.tableArt = function(img) {
+	jQuery.fn.tableArt = function(img, imageTooBigHandler) {
 		var width, height;
 		// var origWidth = img.width, origHeight = img.height;
 		// img.removeAttribute("width");
 		// img.removeAttribute("height");
-		width = img.naturalWidth;
-		height = img.naturalHeight;
+		width = img.width;
+		height = img.height;
 		// img.width = origWidth;
 		// img.height = origHeight;
 
 		if (width * height >= 80000) {
-			if (!confirm('Image is way too big! Are you ok to create a huge table art?')) {
+			if (!imageTooBigHandler.call(this, width * height)) {
 				return this;
 			}
 		}
+		else if(width * height <= 0) return this;
 
 		return this.each(function() {
 			var self = $(this);
@@ -46,7 +47,8 @@
 				width : width,
 				height : height
 			});
-			var imageData = context.getImageData(0, 0, width, height);
+			var pixelArray = context.getImageData(0, 0, width, height).data;
+			canvas.hide();
 			var tdCreateStr = '<td width="1" height="1"></td>';
 			var tdCssProperties = {
 				width : 1,
@@ -57,7 +59,9 @@
 			for ( var y = 0; y < width; y++) {
 				var tr = $('<tr/>').appendTo(table);
 				for ( var x = 0; x < width; x++) {
-					var td = $(tdCreateStr).css(tdCssProperties).css('backgroundColor', '#000000').appendTo(tr);
+					var i = (y*width + x)*4;
+					var td = $(tdCreateStr).css(tdCssProperties).css('backgroundColor',
+							'rgba(' + pixelArray[i] + ',' + pixelArray[i+1] + ', ' + pixelArray[i+2] + ',255)').appendTo(tr);
 				}
 			}
 			table.appendTo(self);

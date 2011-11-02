@@ -46,7 +46,9 @@ function createTableArt(file, self) {
 	
 	var img = new Image();
 	img.onload = function() {
-		$('#tableart-disp').tableArt(img);
+		$('#tableart-disp').tableArt(img, function(self, size) {
+			return confirm('Image is way too big! Are you ok to create a huge table art?');
+		});
 	};
 	img.onerror = function() {
 		dispAWhile("それ画像じゃないよ多分！！！", 3000);
@@ -66,7 +68,8 @@ function createTableArt(file, self) {
 <style>
 #image-dd {
     background-color: #eee;
-    padding: 1em;
+	margin: 1em 0;
+    padding: 2em 1em;
 }
 
 #image-dd.drag-on {
@@ -84,10 +87,10 @@ function createTableArt(file, self) {
 		hi
 	</p>
 	<div id="image-dd">
-		Drag & Drop a Image Here!!!!!!!!
+		ここに画像ファイルをドラッグ＆ドロップ!!!!!!!!
 	</div>
 	<div id="tableart-disp">
-		Table Art Will Be Displayed Here!!!!!!!!
+		ここにテーブルアートが表示されます!!!!!!!!
 	</div>
 </article>
 <footer>
