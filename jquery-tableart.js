@@ -55,27 +55,29 @@
 							+ width
 							+ '" height="'
 							+ height
-							+ '" style="table-layout: fixed; border-collapse: collapse; '
-							+ 'border-spacing: 0px; width: 85px; height: 70px;"><tbody>';
+							+ '" cellpadding="0" style="table-layout: fixed; '
+							+ 'border-collapse: collapse; border-spacing: 0px;"><tbody>\n';
 
-					for ( var y = 0; y < width; y++) {
-						tableStr += '<tr>';
+					for ( var y = 0; y < height; y++) {
+						tableStr += '<tr>\n';
 						for ( var x = 0; x < width; x++) {
 							var i = (y * width + x) * 4;
-							tableStr += '<td width="1" height="1" style="width: 1px; height: 1px; '
-									+ 'margin: 0px; padding: 0px; '
-									+ 'background-color: rgb('
+							tableStr += '<td width="1" height="1" style="background-color: rgba('
 									+ pixelArray[i]
 									+ ','
 									+ pixelArray[i + 1]
-									+ ', '
-									+ pixelArray[i + 2] + ');"></td>';
+									+ ','
+									+ pixelArray[i + 2]
+									+ ','
+									+ pixelArray[i + 3] + ');"></td>\n';
 						}
-						tableStr += '</tr>';
+						tableStr += '</tr>\n';
 					}
 					tableStr += '</tbody></table>';
 
-					self.html(tableStr);
+					$('<div class="tableart-artholder"></div>').html(tableStr).appendTo(self);
+					
+					$('<textarea class="tableart-src" cols="80" rows="30"></textarea>').val(tableStr).appendTo(self);
 				});
 	};
 }(jQuery));
