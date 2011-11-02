@@ -12,14 +12,8 @@
 
 (function($) {
 	jQuery.fn.tableArt = function(img, imageTooBigHandler) {
-		var width, height;
-		// var origWidth = img.width, origHeight = img.height;
-		// img.removeAttribute("width");
-		// img.removeAttribute("height");
-		width = img.width;
-		height = img.height;
-		// img.width = origWidth;
-		// img.height = origHeight;
+		var width = img.width;
+		var height = img.height;
 
 		if (width * height >= 80000) {
 			if (!imageTooBigHandler.call(this, width * height)) {
@@ -36,18 +30,6 @@
 									+ '"></canvas>').appendTo(self);
 					var context = canvas[0].getContext('2d');
 					context.drawImage(img, 0, 0);
-
-					var table = $(
-							'<table width="' + width + '" height="' + height
-									+ '"></table>', {
-								className : 'tableArt'
-							}).css({
-						tableLayout : 'fixed',
-						borderCollapse : 'collapse',
-						borderSpacing : 0,
-						width : width,
-						height : height
-					});
 					var pixelArray = context.getImageData(0, 0, width, height).data;
 					canvas.hide();
 
@@ -75,9 +57,12 @@
 					}
 					tableStr += '</tbody></table>';
 
-					$('<div class="tableart-artholder"></div>').html(tableStr).appendTo(self);
-					
-					$('<textarea class="tableart-src" cols="80" rows="30"></textarea>').val(tableStr).appendTo(self);
+					$('<div class="tableart-artholder"></div>').html(tableStr)
+							.appendTo(self);
+
+					$(
+							'<textarea class="tableart-src" cols="80" rows="30"></textarea>')
+							.val(tableStr).appendTo(self);
 				});
 	};
 }(jQuery));
