@@ -66,11 +66,26 @@ function createTableArt(file, self) {
 	img.onabort = function() {
 		dispAWhile("読み込みが中断されました。ローカルファイルの癖に！！", 3000);
 	};
-	var reader = new FileReader();
-	reader.readAsDataURL(file);
-	reader.onload = function(e) {
-		img.src = e.target.result;
-	};
+	try {
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			img.src = e.target.result;
+		};
+		reader.onerror = function(e) {
+			dispAWhile("ファイルの読み込みに失敗しました。" + function(i) {
+				return i == FileError.SECURITY_ERR
+						? "アクセス権限がありません。"
+						: i == FileError.NOT_FOUND_ERR
+						? "ファイルがありません。"
+						: "なぜかは不明";
+			}(e.target.error.code), 4000);
+			
+		};
+		reader.readAsDataURL(file);
+	}
+	catch(e) {
+		dispAWhile("このブラウザはファイル読み込みに対応していないようです。", 4000);
+	}
 	
 }
 
