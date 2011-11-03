@@ -3,7 +3,8 @@
  * 
  * テーブルアートを生成するjQuery Plugin。
  * 
- * MITライセンスに準拠する。 - http://www.opensource.org/licenses/mit-license.php
+ * MITライセンスに準拠する。
+ *  - http://www.opensource.org/licenses/mit-license.php
  * 
  * @author dai1741
  * @version 0.0
@@ -11,20 +12,60 @@
  */
 
 (function($) {
+	/** パラメータの初期値。 */
 	var defaultParams = {
+		/**
+		 * テーブルアートの生成が成功したときに実行されるコールバック関数。
+		 * 
+		 * @param table 生成されたテーブルアートのtable要素を示すDOMオブジェクト
+		 * @param src このテーブルアートを生成するためのhtmlソース
+		 */
 		complete : function(table, src) {
 		},
+		
+		/**
+		 * 画像が大きすぎるときに実行されるコールバック関数。
+		 * 
+		 * @param size ピクセル単位の画像の面積
+		 * @return テーブルアートの生成を続けるかどうかを決める真偽値。trueなら処理を続行し、falseなら終了する。
+		 * 			falseを返したときにparams.complete()は実行されない。
+		 */
 		imagebig : function(size) {
 			return confirm('Image is way too big! Are you ok to create a huge table art?');
 		},
+		
+		/**
+		 * テーブルアートの生成に失敗したときに実行されるコールバック関数。
+		 * 
+		 * @param errorMessage エラー内容を示す文章
+		 * @param errorCode エラー内容を示す整数値。
+		 * 			1: 入力の画像が不正
+		 * 			2: context.getImageData()が使用不可
+		 * 			3: キャンバスのピクセルデータを取得する権限がない
+		 */
 		error : function(errorMessage, errorCode) {
 		},
+		
+		/** テーブルアートを描画するかどうか */
 		draw : true,
+		
+		/** 
+		 * テーブルアートをquietに生成できる最大の画像面積。
+		 * この数値以上の場合params.imagebig()を実行する。 
+		 */
 		allowedImageVolume : 80000,
 	};
-	var extendedParams;
+	
+	/**
+	 * テーブルアートを生成し、この要素の末尾に追加する。
+	 * 
+	 * @param img 画像。Imageオブジェクトか、img要素のDOMオブジェクトか、
+	 * 			img要素のDOMオブジェクトを1つ持つjQueryオブジェクト
+	 * @param params 拡張用のパラメータ
+	 * @return このjQueryオブジェクト
+	 */
 	jQuery.fn.tableArt = function(img, params) {
-		extendedParams = $.extend(defaultParams, params);
+		var extendedParams = $.extend(defaultParams, params);
 
 		if (!img.src || !img.width || !img.height) {
 			if (img.jquery && img.length > 0) {
