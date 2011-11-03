@@ -17,12 +17,23 @@
 		imagebig : function(size) {
 			return confirm('Image is way too big! Are you ok to create a huge table art?');
 		},
+		error : function(errorMessage, errorCode) {
+		},
 		draw : true,
 		allowedImageVolume : 80000,
 	};
 	var extendedParams;
 	jQuery.fn.tableArt = function(img, params) {
 		extendedParams = $.extend(defaultParams, params);
+
+		if (!img.src || !img.width || !img.height) {
+			if (img.jquery && img.length > 0) {
+				return arguments.callee.call(this, img[0], params);
+			} else {
+				extendedParams.error("Invalid param", 1);
+				return this;
+			}
+		}
 
 		var width = img.width;
 		var height = img.height;
@@ -32,18 +43,35 @@
 					&& !extendedParams.imagebig.call(this, width * height)) {
 				return this;
 			}
-		} else if (width * height <= 0) return this;
+		} else if (width * height <= 0) {
+			extendedParams.error("Invalid resolution", 1);
+			return this;
+		}
 
 		return this
 				.each(function() {
 					var self = $(this);
-					var canvas = $(
-							'<canvas width="' + width + '" height="' + height
-									+ '"></canvas>').appendTo(self);
+					var canvas = $('<canvas width="' + width + '" height="'
+							+ height + '"></canvas>');
 					var context = canvas[0].getContext('2d');
 					context.drawImage(img, 0, 0);
-					var pixelArray = context.getImageData(0, 0, width, height).data;
-					canvas.hide();
+					try {
+						if (!context.getImageData) {
+							extendedParams.error(
+									"context.getImageData() is not available",
+									2);
+							return;
+						}
+						var imageData = context.getImageData(0, 0, width,
+								height);
+						var pixelArray = imageData.data;
+					} catch (e) {
+						extendedParams
+								.error(
+										"context.getImageData() has encountered security exception",
+										3);
+						return;
+					}
 
 					var tableStr = '<table width="'
 							+ width
