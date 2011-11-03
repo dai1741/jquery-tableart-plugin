@@ -20,7 +20,14 @@ $(document).ready(function() {
 	});
 	$('#display-tableart').click(function() {
 		var img = images[$('input[name=image-file]:radio:checked').val()];
-		$('.tableart-disp').tableArt(img);
+		$('.tableart-disp').tableArt(img, {
+			complete: function(table, src) {
+				if ($('input#has-src').is(':checked')) {
+					$('<textarea class="tableart-src" cols="80" rows="30"></textarea>').val(src).appendTo($(this));
+				}
+			},
+			
+		});
 	});
 });
 
@@ -55,11 +62,19 @@ h2, h3 {
 	</noscript>
 	<div class="options">
 		<div id="sample-files"></div>
+		<label><input type="checkbox" name="has-src" id="has-src" />ソースも表示する</label>
+		<br />
 		<button id="display-tableart">表示</button>
 	</div>
 	<div class="tableart-disp">
 		ここにテーブルアートが表示されます!
 	</div>
+	
+	<h3>他のデモ</h3>
+	<ul>
+		<li><a href="demo-basic.html">基本的なデモ</a></li>
+		<li><a href="tableart-localfile-sample.html">ローカルファイルのテーブルアートを生成</a></li>
+	</ul>
 	
 	<h3>動作環境</h3>
 	<ul>
