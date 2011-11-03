@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>jQuery TableArt Plugin</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js">
+</script>
+<script src="jquery-tableart.js">
+</script>
+<script>
+var imageNames = ['sample-star.png', 'sample-pond.jpg'];
+var images = {};
+$(document).ready(function() {
+	$.each(imageNames, function(i, o) {
+		$('<label/>').append($('<input type="radio" name="image-file" />').attr({
+			value: o,
+			checked: i == 0
+		})).append(o).appendTo($('#sample-files'));
+		(images[o] = new Image()).src = o;
+	});
+	$('#display-tableart').click(function() {
+		var img = images[$('input[name=image-file]:radio:checked').val()];
+		$('.tableart-disp').tableArt(img);
+	});
+});
+
+</script>
+<style>
+body {
+	padding: 0 1em 3em;
+}
+h2, h3 {
+	margin: 2em 0 .5em;
+}
+.tableart-disp {
+    background-color: #eee;
+    padding: 1em;
+	border-radius: .5em;
+}
+.options {
+	margin: 1em 0;
+}
+.options label {
+	padding-right: 1em;
+}
+</style>
+</head>
+<body>
+<article class="content">
+	<h2>jQuery TableArt Plugin</h2>
+	<p><a href="http://hinoki.sakura.ne.jp/~okada/table/">テーブルアート</a>を生成するプラグインです。</p>
+	<h3>デモ</h3>
+	<noscript>
+		<p><strong>JavaScriptがオフ</strong></p>
+	</noscript>
+	<div class="options">
+		<div id="sample-files"></div>
+		<button id="display-tableart">表示</button>
+	</div>
+	<div class="tableart-disp">
+		ここにテーブルアートが表示されます!
+	</div>
+	
+	<h3>動作環境</h3>
+	<ul>
+	</ul>
+	
+</article>
+</body>
+</html>
