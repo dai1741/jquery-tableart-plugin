@@ -18,6 +18,7 @@
 		imagebig : function(size) {
 			return confirm('Image is way too big! Are you ok to create a huge table art?');
 		},
+		draw : true,
 		allowedImageVolume : 80000,
 	};
 	var extendedParams;
@@ -69,14 +70,17 @@
 					}
 					tableStr += '</tbody></table>';
 
-					var tableHolder = $(
-							'<div class="tableart-artholder"></div>').html(
-							tableStr).appendTo(self);
+					if (extendedParams.draw) {
+						var tableHolder = $(
+								'<div class="tableart-artholder"></div>').html(
+								tableStr).appendTo(self);
+					}
 
 					setTimeout(function() {
 						if ($.isFunction(extendedParams.complete)) {
-							extendedParams.complete.call(self[0], tableHolder
-									.find('table')[0], tableStr)
+							extendedParams.complete.call(self[0],
+									extendedParams.draw ? tableHolder
+											.find('table')[0] : null, tableStr)
 						}
 					}, 1);
 				});

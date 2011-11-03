@@ -57,6 +57,7 @@ function createTableArt(file, self) {
 			imagebig: function(size) {
 				return confirm('画像が大きすぎます。ブラウザがフリーズするかもしれませんが、処理を続行しますか？');
 			},
+			draw: $('input#draw-tableart').is(':checked')
 		});
 	};
 	img.onerror = function() {
@@ -93,7 +94,13 @@ function createTableArt(file, self) {
 	<h2>CrossAudio</h2>
 	<p>
 		<label>
-			<input type="checkbox" name="has-src" id="has-src" />htmlソースを表示する（重い）
+			<input type="checkbox" name="draw-tableart" id="draw-tableart" checked/>テーブルアートを表示する
+			（重い）
+
+		</label>
+		<br/>
+		<label>
+			<input type="checkbox" name="has-src" id="has-src" />htmlソースを表示する（やや重い）
 		</label>
 	</p>
 	<p id="image-dd">
