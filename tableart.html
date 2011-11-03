@@ -26,7 +26,7 @@ $(document).ready(function() {
 					$('<textarea class="tableart-src" cols="80" rows="30"></textarea>').val(src).appendTo($(this));
 				}
 			},
-			
+		
 		});
 	});
 });
@@ -34,52 +34,66 @@ $(document).ready(function() {
 </script>
 <style>
 body {
-	padding: 0 1em 3em;
+    padding: 0 1em 3em;
+	line-height: 1.3;
 }
+
 h2, h3 {
-	margin: 2em 0 .5em;
+    margin: 2em 0 .5em;
 }
+
 .tableart-disp {
     background-color: #eee;
     padding: 1em;
-	border-radius: .5em;
+    border-radius: .5em;
 }
+
 .options {
-	margin: 1em 0;
+    margin: 1em 0;
 }
+
 .options label {
-	padding-right: 1em;
+    padding-right: 1em;
 }
 </style>
 </head>
 <body>
 <article class="content">
 	<h2>jQuery TableArt Plugin</h2>
-	<p><a href="http://hinoki.sakura.ne.jp/~okada/table/">テーブルアート</a>を生成するプラグインです。</p>
+	<p>
+		<a href="http://hinoki.sakura.ne.jp/~okada/table/">テーブルアート</a>を生成するプラグインです。
+	</p>
 	<h3>デモ</h3>
 	<noscript>
-		<p><strong>JavaScriptがオフ</strong></p>
+		<p>
+			<strong>JavaScriptがオフ</strong>
+		</p>
 	</noscript>
 	<div class="options">
-		<div id="sample-files"></div>
-		<label><input type="checkbox" name="has-src" id="has-src" />ソースも表示する</label>
-		<br />
-		<button id="display-tableart">表示</button>
+		<div id="sample-files">
+		</div>
+		<label>
+			<input type="checkbox" name="has-src" id="has-src" />ソースも表示する
+		</label>
+		<br/>
+		<button id="display-tableart">
+			表示
+		</button>
 	</div>
 	<div class="tableart-disp">
 		ここにテーブルアートが表示されます!
 	</div>
-	
 	<h3>他のデモ</h3>
 	<ul>
 		<li><a href="demo-basic.html">基本的なデモ</a></li>
 		<li><a href="tableart-localfile-sample.html">ローカルファイルのテーブルアートを生成</a></li>
 	</ul>
-	
 	<h3>動作環境</h3>
 	<ul>
+		<li>IE 9、Firefox 3.6、Google Chrome 15、Safari 5.1、Opera 11で動作を確認。</li>
+		<li>FirefoxとGoogle Chromeは、特殊な設定をしない限りローカル環境では動作しません（same originポリシー違反とみなされるため）。</li>
+		<li>IE8では動作しません。他のブラウザのより古いバージョンの動作状況は未確認です。</li>
 	</ul>
-	
 </article>
 </body>
 </html>
