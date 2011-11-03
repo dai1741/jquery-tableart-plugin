@@ -49,10 +49,14 @@ function createTableArt(file, self) {
 	var img = new Image();
 	img.onload = function() {
 		$('#tableart-disp').tableArt(img, {
-			imageTooBigHandler: function(self, size) {
+			complete: function(table, src) {
+				if ($('input#has-src').is(':checked')) {
+					$('<textarea class="tableart-src" cols="80" rows="30"></textarea>').val(src).appendTo($(this));
+				}
+			},
+			imagebig: function(size) {
 				return confirm('画像が大きすぎます。ブラウザがフリーズするかもしれませんが、処理を続行しますか？');
 			},
-			hasSrc: $('input#has-src').is(':checked')
 		});
 	};
 	img.onerror = function() {
@@ -88,13 +92,16 @@ function createTableArt(file, self) {
 <article class="content">
 	<h2>CrossAudio</h2>
 	<p>
-		<label><input type="checkbox" name="has-src" id="has-src" />htmlソースを表示する（重い）</label>
+		<label>
+			<input type="checkbox" name="has-src" id="has-src" />htmlソースを表示する（重い）
+		</label>
 	</p>
 	<p id="image-dd">
 		ここに画像ファイルをドラッグ＆ドロップ!!!!!!!!
 	</p>
 	<p id="image-input">
-		あるいはここで画像ファイルを選択!!!!!!!!<br />
+		あるいはここで画像ファイルを選択!!!!!!!!
+		<br/>
 		<input id="read-button" type="file" size="50" />
 	</p>
 	<div id="tableart-disp">

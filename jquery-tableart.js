@@ -12,13 +12,13 @@
 
 (function($) {
 	var defaultParams = {
-		imageTooBigHandler : function(self, size) {
+		complete : function(table, src) {
+			console.log('table art complete');
+		},
+		imagebig : function(size) {
 			return confirm('Image is way too big! Are you ok to create a huge table art?');
 		},
 		allowedImageVolume : 80000,
-		hasSrc : true,
-		srcCols : 80,
-		srcRows : 30,
 	};
 	var extendedParams;
 	jQuery.fn.tableArt = function(img, params) {
@@ -28,13 +28,11 @@
 		var height = img.height;
 
 		if (width * height >= extendedParams.allowedImageVolume) {
-			if (typeof extendedParams.imageTooBigHandler == 'function'
-					&& !extendedParams.imageTooBigHandler.call(this, width
-							* height)) {
+			if ($.isFunction(extendedParams.imagebig)
+					&& !extendedParams.imagebig.call(this, width * height)) {
 				return this;
 			}
-		} else if (width * height <= 0)
-			return this;
+		} else if (width * height <= 0) return this;
 
 		return this
 				.each(function() {
@@ -71,17 +69,16 @@
 					}
 					tableStr += '</tbody></table>';
 
-					$('<div class="tableart-artholder"></div>').html(tableStr)
-							.appendTo(self);
+					var tableHolder = $(
+							'<div class="tableart-artholder"></div>').html(
+							tableStr).appendTo(self);
 
-					if (extendedParams.hasSrc) {
-						$(
-								'<textarea class="tableart-src" cols="'
-										+ extendedParams.srcCols + '" rows="'
-										+ extendedParams.srcRows
-										+ '"></textarea>').val(tableStr)
-								.appendTo(self);
-					}
+					setTimeout(function() {
+						if ($.isFunction(extendedParams.complete)) {
+							extendedParams.complete.call(self[0], tableHolder
+									.find('table')[0], tableStr)
+						}
+					}, 1);
 				});
 	};
 }(jQuery));
