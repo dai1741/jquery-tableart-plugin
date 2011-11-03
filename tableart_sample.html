@@ -13,10 +13,8 @@ $(document).ready(function() {
 	$('.image-dd').bind('dragenter', function(e) {
 		ignoreDrag(e);
 		$(this).addClass('drag-on');
-		console.log('dragin');
 	}).bind('dragover', ignoreDrag).bind('dragleave', function(e) {
 		$(this).removeClass('drag-on');
-		console.log('dragout');
 	}).bind('drop', function(e) {
 		ignoreDrag(e);
 		$(this).removeClass('drag-on');
@@ -149,7 +147,7 @@ h2, h3 {
 		<li>Firefox3.6、Google Chrome15、Opera11で動作確認。</li>
 		<li>特権のないGoogle Chromeはローカル環境で動作しません。</li>
 		<li>Operaはドラッグ＆ドロップが動作しません。</li>
-		<li>IEとSafariは現在非対応です。</li>
+		<li>IEとSafariは現在非対応です。IE10ではおそらく動作しますが、未確認です。</li>
 	</ul>
 	
 </article>

@@ -13,7 +13,6 @@
 (function($) {
 	var defaultParams = {
 		complete : function(table, src) {
-			console.log('table art complete');
 		},
 		imagebig : function(size) {
 			return confirm('Image is way too big! Are you ok to create a huge table art?');
