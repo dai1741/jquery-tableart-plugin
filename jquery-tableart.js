@@ -28,7 +28,7 @@
 		 * 
 		 * @param size ピクセル単位の画像の面積
 		 * @return テーブルアートの生成を続けるかどうかを決める真偽値。trueなら処理を続行し、falseなら終了する。
-		 * 			falseを返したときにparams.complete()は実行されない。
+		 * 			falseを返したときにparams.error()が実行される。
 		 */
 		imagebig : function(size) {
 			return confirm('Image is way too big! Are you ok to create a huge table art?');
@@ -42,6 +42,7 @@
 		 * 			1: 入力の画像が不正
 		 * 			2: context.getImageData()が使用不可
 		 * 			3: キャンバスのピクセルデータを取得する権限がない
+		 * 			8: 画像が大きすぎるので生成を中止した
 		 */
 		error : function(errorMessage, errorCode) {
 		},
@@ -58,10 +59,14 @@
 	
 	/**
 	 * テーブルアートを生成し、この要素の末尾に追加する。
+	 * 非常に処理が重いので注意して使うべきである。
 	 * 
 	 * @param img 画像。Imageオブジェクトか、img要素のDOMオブジェクトか、
-	 * 			img要素のDOMオブジェクトを1つ持つjQueryオブジェクト
-	 * @param params 拡張用のパラメータ
+	 * 			img要素のDOMオブジェクトを1つ持つjQueryオブジェクト。
+	 * 			この画像は関数が呼ばれる以前に読み込みが完了している
+	 * 			(img.complete === true となる)必要がある。
+	 * @param params 拡張用のパラメータ。
+	 * 			コールバック関数は全て同期的に実行される（この関数が終了する前に実行される）。
 	 * @return このjQueryオブジェクト
 	 */
 	jQuery.fn.tableArt = function(img, params) {
@@ -82,6 +87,8 @@
 		if (width * height >= extendedParams.allowedImageVolume) {
 			if ($.isFunction(extendedParams.imagebig)
 					&& !extendedParams.imagebig.call(this, width * height)) {
+
+				extendedParams.error("Generation canceled due to image size", 8);
 				return this;
 			}
 		} else if (width * height <= 0) {
