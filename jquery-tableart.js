@@ -70,13 +70,17 @@
 	 * @return このjQueryオブジェクト
 	 */
 	jQuery.fn.tableArt = function(img, params) {
+		var me = this;
 		var extendedParams = $.extend(defaultParams, params);
 
+		var callError = function() {
+			extendedParams.error.apply(me, arguments);
+		};
 		if (!img.src || !img.width || !img.height) {
 			if (img.jquery && img.length > 0) {
 				return arguments.callee.call(this, img[0], params);
 			} else {
-				extendedParams.error("Invalid param", 1);
+				callError("Invalid param", 1);
 				return this;
 			}
 		}
@@ -88,11 +92,11 @@
 			if ($.isFunction(extendedParams.imagebig)
 					&& !extendedParams.imagebig.call(this, width * height)) {
 
-				extendedParams.error("Generation canceled due to image size", 8);
+				callError("Generation canceled due to image size", 8);
 				return this;
 			}
 		} else if (width * height <= 0) {
-			extendedParams.error("Invalid resolution", 1);
+			callError("Invalid resolution", 1);
 			return this;
 		}
 
@@ -114,10 +118,9 @@
 								height);
 						var pixelArray = imageData.data;
 					} catch (e) {
-						extendedParams
-								.error(
-										"context.getImageData() has encountered security exception",
-										3);
+						callError(
+								"context.getImageData() has encountered security exception",
+								3);
 						return;
 					}
 
@@ -151,13 +154,11 @@
 								tableStr).appendTo(self);
 					}
 
-					setTimeout(function() {
-						if ($.isFunction(extendedParams.complete)) {
-							extendedParams.complete.call(self[0],
-									extendedParams.draw ? tableHolder
-											.find('table')[0] : null, tableStr)
-						}
-					}, 1);
+					if ($.isFunction(extendedParams.complete)) {
+						extendedParams.complete.call(me, extendedParams.draw
+								? tableHolder.find('table')[0]
+								: null, tableStr)
+					}
 				});
 	};
 }(jQuery));
