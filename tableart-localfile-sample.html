@@ -8,7 +8,6 @@
 <script src="jquery-tableart.js">
 </script>
 <script>
-var img;
 $(document).ready(function() {
 	$('.image-dd').bind('dragenter', function(e) {
 		ignoreDrag(e);
@@ -26,7 +25,8 @@ $(document).ready(function() {
 	})
 	
 });
-//http://jxs.me/2010/09/20/drag-and-drop-with-jquery/
+
+//derived from: http://jxs.me/2010/09/20/drag-and-drop-with-jquery/
 function ignoreDrag(e) {
 	e.originalEvent.stopPropagation();
 	e.originalEvent.preventDefault();
@@ -37,13 +37,13 @@ function createTableArt(file, self) {
 		return;
 	
 	var dispAWhile = function(mes, mills) {
-		var orig = self.text();
-		self.text(mes);
-		self.addClass('caution');
-		setTimeout(function() {
-			self.text(orig);
-			self.removeClass('caution');
-		}, mills);
+		var orig;
+		self.stop().queue(function() {
+			orig = self.text();
+			self.text(mes).addClass('caution').dequeue();
+		}).delay(mills).queue(function() {
+			self.text(orig).removeClass('caution').dequeue();
+		});
 	};
 	
 	var img = new Image();
@@ -63,8 +63,14 @@ function createTableArt(file, self) {
 	img.onerror = function() {
 		dispAWhile("それ画像じゃないよ多分！！", 3000);
 	};
+	
 	try {
 		var reader = new FileReader();
+	}
+	catch(e) {
+		dispAWhile("このブラウザはファイル読み込みに対応していないようです。", 4000);
+	}
+	try {
 		reader.onload = function(e) {
 			img.src = e.target.result;
 		};
@@ -81,7 +87,7 @@ function createTableArt(file, self) {
 		reader.readAsDataURL(file);
 	}
 	catch(e) {
-		dispAWhile("このブラウザはファイル読み込みに対応していないようです。", 4000);
+		dispAWhile("不明なエラーが発生しました。", 4000);
 	}
 	
 }
@@ -115,7 +121,7 @@ h2, h3 {
 <body>
 <article class="content">
 	<h2>テーブルアート生成機</h2>
-	<p>自作のjQueryプラグイン「TableArt」を使って
+	<p>jQueryプラグイン「TableArt」を使って
 	<a href="http://hinoki.sakura.ne.jp/~okada/table/">テーブルアート</a>を生成します。</p>
 	<noscript>
 		<p><strong>JavaScriptがオフ</strong></p>
