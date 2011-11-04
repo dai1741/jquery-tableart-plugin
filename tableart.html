@@ -88,6 +88,16 @@ h2, h3 {
 		<li><a href="demo-basic.html">基本的なデモ</a></li>
 		<li><a href="tableart-localfile-sample.html">ローカルファイルのテーブルアートを生成</a></li>
 	</ul>
+	<h3>サンプルコード</h3>
+	<pre>
+&lt;script&gt;
+$(window).load(function () {
+    $('#tableart-holder').tableArt($('#the-image'));
+});
+&lt;/script&gt;
+
+&lt;img id="the-image" src="image.png" /&gt;
+&lt;div id="tableart-holder"&gt;&lt;/div&gt;</pre>
 	<h3>動作環境</h3>
 	<ul>
 		<li>IE 9、Firefox 3.6、Google Chrome 15、Safari 5.1、Opera 11で動作を確認。</li>
