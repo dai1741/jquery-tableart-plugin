@@ -54,7 +54,7 @@
 		 * テーブルアートをquietに生成できる最大の画像面積。
 		 * この数値以上の場合params.imagebig()を実行する。 
 		 */
-		allowedImageVolume : 80000,
+		allowedImageVolume : 80000
 	};
 	
 	/**
