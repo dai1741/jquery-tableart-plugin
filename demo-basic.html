@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Basic Demo - jQuery TableArt Plugin</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script src="jquery-tableart.min.js"></script>
+
+<script>
+//Simple demo
+$(document).ready(function() {
+	$('#display-tableart').click(function() {
+		var img = $('#the-image');
+		$('#tableart-disp').tableArt(img);
+	});
+});
+</script>
+
+</head>
+<body>
+	
+<p>
+	<img id="the-image" src="sample-star.png" alt="" />
+	<button id="display-tableart">
+		この画像のテーブルアートを表示
+	</button>
+</p>
+<div id="tableart-disp">
+ここに表示
+</div>
+
+</body>
+</html>
