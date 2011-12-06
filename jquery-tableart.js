@@ -8,7 +8,7 @@
  * 
  * @author dai1741
  * @version 0.0
- * @see http://
+ * @see https://github.com/dai1741/jquery-tableart-plugin
  */
 
 (function($) {
